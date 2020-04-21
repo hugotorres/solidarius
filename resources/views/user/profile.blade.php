@@ -3,9 +3,6 @@
 @section('content')
 <div class="container-fluid">
         <div class="row profile">
-            <div class="col-md-12 preview-profile">
-               <div class="card"><div class="card-body">Aqui puede ir el listado de imagenes de lso libros que corresponden al usuario</div></div>
-            </div>
 
             <div class="col-md-12">
                 <div class="profile-content">

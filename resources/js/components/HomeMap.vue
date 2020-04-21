@@ -12,15 +12,15 @@
       </div>
     </multipane>-->
 
-    <div class="col-sm-6 mapa">
+    <div class="col-sm-8 mapa">
       <div>
         <google-map v-on:clickMarker="clickMarker" :markers="products" :categories="categories"></google-map>
       </div>
     </div>
 
-    <div class="col-sm-6 detalles">
+    <div class="col-sm-4 detalles">
       <div>
-        <detail-panel :isActive="sidePanel" :producto="detailRequested" v-if="detailRequested"></detail-panel>
+        <detail-panel :isActive="sidePanel" :categories="categories" :producto="detailRequested" v-if="detailRequested"></detail-panel>
         </div>
     </div>
   </div>

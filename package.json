@@ -24,6 +24,7 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "@alfsnd/vue-bootstrap-select": "^0.4.4",
         "@ckeditor/ckeditor5-basic-styles": "^17.0.0",
         "@ckeditor/ckeditor5-build-classic": "^17.0.0",
         "@ckeditor/ckeditor5-editor-classic": "^17.0.0",
@@ -33,6 +34,7 @@
         "@ckeditor/ckeditor5-vue": "^1.0.1",
         "vue-axios": "^2.1.5",
         "vue-multipane": "^0.9.5",
+        "vue-multiselect": "^2.1.6",
         "vue-toastification": "^1.4.0",
         "vue-truncate-collapsed": "^2.1.0",
         "vue-upload-multiple-image": "^1.1.4",

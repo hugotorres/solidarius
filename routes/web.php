@@ -20,11 +20,14 @@ Route::get('/', 'WelcomController@index');
 Route::get('/welcome', 'WelcomController@index');
 
 
-Route::get('/admin', 'UserController@admin')->name('admin');
+Route::get('/admin', 'AdminController@index')->name('admin');
 
-Route::get('/admin/users', 'UserController@users')->name('admin.users');
-Route::get('/admin/categories', 'UserController@categories')->name('admin.categories');
-Route::post('/admin/categories/new', 'UserController@newCategory')->name('admin.newCategory');
+Route::get('/admin/users', 'AdminController@users')->name('admin.users');
+Route::get('/admin/categories', 'AdminController@getCategories')->name('admin.categories');
+Route::post('/admin/categories/new', 'AdminController@newCategory')->name('admin.newCategory');
+Route::post('/admin/categories/delete', 'AdminController@deleteCategory')->name('admin.deleteCategory');
+Route::post('/admin/categories/update', 'AdminController@updateCategory')->name('admin.updateCategory');
+Route::get('/admin/categories/edit/{id}', 'AdminController@editCategory')->name('admin.categories.edit');
 
 Route::get('/categories', 'CategoryController@index')->name('category');
 

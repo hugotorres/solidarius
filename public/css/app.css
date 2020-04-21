@@ -11365,7 +11365,11 @@ a.text-dark:focus {
 }
 
 .bg-red {
-  background: #f7f7f7;
+  background: #db0000;
+}
+
+.bg-white {
+  background: #ffffff;
 }
 
 /* Profile container */

@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<new-product-form :categories="{{  json_encode($categories)  }}"></new-product-form>
+{{$categories}}
+<new-product-form :categoriesData="{{  json_encode($categories)  }}"></new-product-form>
 
 
 <footer-vue></footer-vue>

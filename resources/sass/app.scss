@@ -18,6 +18,9 @@
 .bg-red{
     background: $header-red;
 }
+.bg-white{
+    background: $header-white;
+}
 
 
 
@@ -234,7 +237,7 @@
 
 
 .register{
-    
+
  .card{
     display:table;
     .card-header{display:table-cell;}

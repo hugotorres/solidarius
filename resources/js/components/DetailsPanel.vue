@@ -3,6 +3,7 @@
     <div
       class="side-panel"
       v-if="producto"
+      style="height:50vh"
       v-bind:class="{ active: isActive , inactive: !isActive }"
     >
       <div class="side-content">
@@ -13,16 +14,11 @@
           <div class="row detalle">
             <div class="col-sm-12 text-justify py-2 d-flex justify-content-between">
               <div style="color:white;">
-                <h3>
-                  <i class="fa fa-venus" v-if="producto.gender=='f'"></i>
-                  <i class="fa fa-mars" v-if="producto.gender=='m'"></i>
-                  {{producto.text}} / {{producto.age}}
-                </h3>
+                <h3 style="text-transform: capitalize;">{{producto.text}}</h3>
               </div>
               <div class="dates">
-                <span>Se unio: hace {{days_between(new Date(producto.created_at),new Date())}} dias</span>
-                <br />
-                <span>Actualizado: hace {{days_between(new Date(producto.updated_at),new Date())}} dias</span>
+                <!-- <span>Actualizado: hace {{days_between(new Date(producto.updated_at),new Date())}} dias</span> -->
+                Rating:{{producto.rating}}
               </div>
             </div>
             <!--  Carrusel de fotos -->
@@ -43,10 +39,9 @@
                     />
                   </div>
                 </div>
-                <div class="default-image" v-if="!detalles.image">
-                    No hay imagen
-                </div>
-                <a v-if="detalles.image"
+                <div class="default-image" v-if="!detalles.image">No hay imagen</div>
+                <a
+                  v-if="detalles.image"
                   class="carousel-control-prev"
                   href="#carouselExampleInterval"
                   role="button"
@@ -55,7 +50,8 @@
                   <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                   <span class="sr-only">Previous</span>
                 </a>
-                <a v-if="detalles.image"
+                <a
+                  v-if="detalles.image"
                   class="carousel-control-next"
                   href="#carouselExampleInterval"
                   role="button"
@@ -65,71 +61,88 @@
                   <span class="sr-only">Next</span>
                 </a>
               </div>
+            </div>
+            <div class="col-sm-6 my-4">
+              <div class="product-description" v-html="detalles.description"></div>
+              <div class="category">{{detalles.category}}</div>
               <div class="d-flex justify-content-between">
                 <a
-                  :href="producto.whatsapp"
+                  v-if="detalles.whatsapp"
+                  :href="detalles.whatsapp"
                   class="btn btn-success btn-sm whatsapp-btn contact-btn"
                 >whatsapp</a>
                 <a
-                  :href="producto.phone_number"
+                  v-if="detalles.phone_number"
+                  :href="detalles.phone_number"
                   class="btn btn-success btn-sm call-btn contact-btn"
                 >Llamar</a>
               </div>
               <hr />
               <div class="d-flex justify-content-between">
-                <a :href="producto.url_instagram" class="btn btn-info btn-sm contact-btn">Instagram</a>
-                <a :href="producto.url" class="btn btn-info btn-sm contact-btn">Sitio Web</a>
+                <a
+                  v-if="detalles.url_instagram"
+                  :href="detalles.url_instagram"
+                  class="btn btn-info btn-sm contact-btn"
+                >Instagram</a>
+                <a
+                  v-if="detalles.url"
+                  :href="detalles.url"
+                  class="btn btn-info btn-sm contact-btn"
+                >Sitio Web</a>
               </div>
-            </div>
-            <div class="col-sm-6 my-4">
-              <div class="product-description" v-html="producto.description"></div>
-              <div class="category">{{producto.category}}</div>
-              <div class="rating" v-show="producto.rating">{{producto.rating}}</div>
-              <div class="horario">
+              <!-- <div class="horario">
                 <i class="fa fa-calendar"></i>
                 {{producto.horario}}
               </div>
               <div class="tarifa">
                 <i class="fa fa-money"></i>
                 {{producto.tarifa}}
-              </div>
+              </div>-->
             </div>
           </div>
         </div>
       </div>
     </div>
-
     <div class="default-content" v-bind:class="{ active: !isActive, inactive: isActive }">
       <div class="col">
         <div class="home-image text-center">
-          <img src="/images/icon.png" alt />
-          <h3>Solidarius</h3>
-          <p>Colombiano ayuda Colombiano</p>
+          <img src="/images/solidarius.jpg" alt="solidarius" />
+          <h3>NecesiTu</h3>
+          <p>Apoya los negocios locales durante la crisis.</p>
         </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body2">
+
+         <multiselect
+         v-model="value"
+         :options="getOrderedCategories"
+         :multiple="true"
+         group-values="title"
+         group-label="title"
+         :group-select="true"
+         placeholder="Seleccione una o varias categorias."
+         track-by="subs"
+         label="title">
+         <span slot="noResult">No hay elementos para mostrar.</span>
+         </multiselect>
+{{getOrderedCategories}}
       </div>
     </div>
   </div>
 </template>
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped lang="scss">
 .carousel {
-  height: 480px;
   .carousel-inner {
     height: 97%;
   }
 }
 .home-map-wrapper.row {
-    overflow: hidden;
+  overflow: hidden;
 }
-.row.detalle:after {
-    content: "";
-    height: 100%;
-    width: 100%;
-    background: #8f8f8f52;
-    position: absolute;
-    transform: rotate(45deg);
-    left: 232px;
-    z-index: -100;
-}
+
 *::before,
 *::after {
   box-sizing: border-box;
@@ -167,7 +180,7 @@ button.close {
   -webkit-transform-origin-x: rotate(45deg);
 }
 .home-image img {
-  height: 300px;
+  height: 150px;
   text-align: center;
   border-radius: 50%;
 }
@@ -223,20 +236,86 @@ button.close {
 </style>
 
 <script>
+import Multiselect from "vue-multiselect";
 export default {
   name: "DetailsPanel",
+  components: { Multiselect },
+  computed:{
+getOrderedCategories:function(){
+    var ordenadas =[]
+    Object.values(this.categories).forEach((element,index) => {
+      ordenadas.push(element);
+      if(element['0']){
+           ordenadas[index]['subs']=[];
+            ordenadas[index]['subs'].push(element['0']);
+      }
+    });
+    console.log('ordendas',ordenadas);
+    return ordenadas;
+}
+  },
+
   mounted() {
     this.detalles = this.producto;
+
+
   },
   updated() {
     this.detalles = this.producto;
   },
+
   data() {
     return {
+      value: null,
+      orderedCategories:this.orderCategories(),
+      options: [
+        {
+          language: "Javascript",
+          libs: [
+            { name: "Vue.js", category: "Front-end" },
+            { name: "Adonis", category: "Backend" }
+          ]
+        },
+        {
+          language: "Ruby",
+          libs: [
+            { name: "Rails", category: "Backend" },
+            { name: "Sinatra", category: "Backend" }
+          ]
+        },
+        {
+          language: "Other",
+          libs: [
+            { name: "Laravel", category: "Backend" },
+            { name: "Phoenix", category: "Backend" }
+          ]
+        }
+      ],
       detalles: []
     };
   },
   methods: {
+    orderCategories:function(){
+        var ordenadas =[]
+        Object.values(this.categories).forEach((element,index) => {
+        ordenadas.push(element);
+        if(element['0']){
+            ordenadas[index]['subs']=[];
+                ordenadas[index]['subs'].push(element['0']);
+        }
+        });
+        console.log('ordenadas',ordenadas);
+
+        return ordenadas;
+    },
+    addTag(newTag) {
+      const tag = {
+        name: newTag,
+        code: newTag.substring(0, 2) + Math.floor(Math.random() * 10000000)
+      };
+      this.options.push(tag);
+      this.value.push(tag);
+    },
 
     toggle: function(event) {
       this.isActive = !this.isActive;
@@ -252,8 +331,7 @@ export default {
       return Math.round(differenceMs / ONE_DAY);
     }
   },
-  props: ["isActive", "producto"]
-
+  props: ["isActive", "producto", "categories"]
 };
 </script>
 

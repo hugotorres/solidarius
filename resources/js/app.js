@@ -22,6 +22,7 @@ window.Vue = require('vue');
 import Vue from "vue";
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
+import Multiselect from 'vue-multiselect'
 
 
 import * as VueGoogleMaps from "vue2-google-maps";
@@ -35,6 +36,7 @@ import wysiwyg from "vue-wysiwyg";
 Vue.use(wysiwyg, {}); // config is optional. more below
 Vue.use(VueAxios, axios);
 Vue.use( CKEditor );
+Vue.use(Multiselect);
 Vue.use(VueGoogleMaps, {
     load: {
         key: "AIzaSyAbUQ8c9GCYUCSLi5DC71tDpJrXMet1fak",

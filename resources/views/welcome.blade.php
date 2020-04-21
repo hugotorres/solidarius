@@ -2,7 +2,7 @@
 @section('content')
 <?php $active=true;  ?>
     <div class="justify-content-center">
-            <home-map :products="{{$profiles}}" :categories="{{$categories}}"></home-map>
+            <home-map :products="{{$profiles}}" :categories="{{json_encode($categories)}}"></home-map>
     </div>
 <div class=" category-container ">
     <div class="row container ">

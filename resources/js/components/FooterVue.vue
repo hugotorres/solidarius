@@ -7,10 +7,10 @@
         <div class="col-xs-12 col-sm-6 col-md-3">
           <div class="widget subscribe no-box">
             <h5 class="widget-title">
-              SOlidarius
+              Necesitu
               <span />
             </h5>
-            <p>Bitches around U</p>
+            <p>sdsffsdfsd sdf </p>
           </div>
         </div>
 
@@ -145,7 +145,7 @@
     /* Main Footer */
     footer .main-footer {
         padding: 20px 0;
-        background: #252525;
+        background: #787878;
     }
     footer ul {
         padding-left: 0;
@@ -245,7 +245,7 @@
         margin-bottom: 18px;
     }
     .widget li a {
-        color: #ff8d1e;
+        color: #ffffff;
     }
     .widget li a:hover {
         color: #4b92dc;
@@ -304,7 +304,7 @@
         padding: 0;
     }
     ul.social-footer2 li a:hover {
-        background-color: #ff8d1e;
+        background-color: #a80000;
     }
     ul.social-footer2 li a {
         display: block;
@@ -313,7 +313,7 @@
         text-align: center;
     }
     .btn {
-        background-color: #ff8d1e;
+        background-color: #a80000;
         color: #fff;
     }
     .btn:hover,

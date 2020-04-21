@@ -10,7 +10,7 @@
     <gmap-map
       :center="center"
       :zoom="13"
-      style="width:100%;  height: 80vh;"
+      style="width:100%;  height: 90vh;"
       :options="{
         zoomControl: true,
         mapTypeControl: false,

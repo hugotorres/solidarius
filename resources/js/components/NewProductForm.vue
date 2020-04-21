@@ -3,13 +3,13 @@
     <div
       class="alert alert-warning alert-dismissible fade show"
       role="alert"
-      v-if="notification!==''"
+      v-if="notification !== ''"
     >
-      {{notification}}
+      {{ notification }}
       <button
         type="button"
         class="close"
-        @click="notification=''"
+        @click="notification = ''"
         aria-label="Close"
       >
         <span aria-hidden="true">&times;</span>
@@ -40,7 +40,7 @@
               aria-selected="false"
             >Fotos</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item hidden">
             <a
               class="nav-link"
               id="contact-tab"
@@ -64,6 +64,10 @@
                 <div class="col-sm-6 my-4">
                   <h5>Selecciona tu ubicaci?n actual:</h5>
                   <google-map-form v-on:updatePosition="updatePosition"></google-map-form>
+
+                  <hr />
+                  <label for="description" class="col-sm-2 control-label">Descripcion</label>
+                  <ckeditor :editor="editor" v-model="profile.description" :config="editorConfig"></ckeditor>
                 </div>
                 <div class="col-sm-6 my-4">
                   <div class="form-group">
@@ -79,6 +83,21 @@
                       />
                     </div>
                   </div>
+                  <multiselect
+                    v-model="profile.category_id"
+                    :options="cateogryOptions"
+                    :multiple="true"
+                    group-values="libs"
+                    group-label="language"
+                    :group-select="true"
+                    placeholder="Seleccione una o varias categorias."
+                    track-by="name"
+                    label="name"
+                  >
+                    <span
+                      slot="noResult"
+                    >Oops! No elements found. Consider changing the search query.</span>
+                  </multiselect>
 
                   <!-- <div class="form-group">
                     <label for="text" class="col-sm-2 control-label">Tarifa</label>
@@ -146,6 +165,114 @@
                       />
                     </div>
                   </div>
+                  <div class="form-group">
+                    <label for="url_instagram" class="col-sm-2 control-label">Url</label>
+                    <div class="col-sm-10">
+                      <input
+                        type="text"
+                        id="url_instgram"
+                        name="url_instagram"
+                        v-model="profile.url_instagram"
+                        class="form-control"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div class="images-form">
+                    <div class="form-group">
+                      <label v-if="tempImages.length > 0" for="image" class="col-sm-2 control-label">Selected Files</label>
+
+                      <table v-if="tempImages.length > 0" class="table">
+                        <thead class="thead-light">
+                          <td>Filename</td>
+                          <td>Size</td>
+                          <td>Type</td>
+                        </thead>
+                        <tbody>
+                          <tr
+                            class="selected-files"
+                            v-for="file in tempImages"
+                            v-bind:key="file.id"
+                          >
+                            <td class="filename">{{ file.name }}</td>
+                            <td class="size">{{ file.size }}</td>
+                            <td class="type">{{ file.type }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <div class="col-sm-10">
+                        <div class="box">
+                          <input
+                            @change="fileSelected"
+                            type="file"
+                            name="files"
+                            id="file-1"
+                            class="inputfile inputfile-1"
+                            data-multiple-caption="{count} files selected"
+                            multiple
+                            accept="image/*"
+                          />
+                          <label for="file-1">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="20"
+                              height="17"
+                              viewBox="0 0 20 17"
+                            >
+                              <path
+                                d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"
+                              />
+                            </svg>
+                            <span>
+                              Choose a
+                              file&hellip;
+                            </span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <!--  <div
+                            class="container col-sm-8 text-center center-block"
+                        >
+                            <button
+                                @click="formSubmit"
+                                type="submit"
+                                class="btn btn-success btn-lg btn-block"
+                            >
+                                Guardar Cambios
+                            </button>
+                    </div>-->
+                    <hr />
+                    <div class="col-sm-12">
+                      <div
+                        class="imagen preview-image"
+                        v-for="item in filterImages(
+                                                    profileData.image
+                                                )"
+                        v-bind:key="item.id"
+                      >
+                        <a
+                          @click="
+                                                        deleteImage(
+                                                            item,
+                                                            item.id
+                                                        )
+                                                    "
+                          class="button btn-sm btn-outline-danger"
+                        >
+                          <span aria-hidden="true">&times;</span>
+                        </a>
+                        <img
+                          :src="
+                                                        '/uploads/profile/' +
+                                                            item
+                                                    "
+                          alt
+                        />
+                      </div>
+                    </div>
+                  </div>
                   <!-- <div class="form-group">
                     <label for="text" class="col-sm-2 control-label">Servicios</label>
                     <div class="col-sm-10">
@@ -158,7 +285,7 @@
                         required
                       />
                     </div>
-                  </div>
+                  </div>-->
                   <div class="form-group">
                     <label for="category" class="col-sm-2 control-label">Categoria</label>
                     <div class="col-sm-10">
@@ -169,29 +296,18 @@
                         v-model="profile.category_id"
                         required
                       >
-                        <option value selected>---Select Category</option>
-                        <option value="1">Chubby</option>
+                        <option value selected>---Seleccione categoria</option>
                         <option
-                          v-for="{title, description, id} in categoriesData"
+                          v-for="{title, description, id} in categories"
                           :key="id"
                           v-bind:value="id"
                         >{{title}}</option>
                       </select>
                     </div>
-                  </div>-->
+                  </div>
                 </div>
 
                 <div class="container my-4">
-                  <div class="form-group">
-                    <label for="description" class="col-sm-2 control-label">Descripcion</label>
-                    <div class="col-sm-12">
-                      <ckeditor
-                        :editor="editor"
-                        v-model="profile.description"
-                        :config="editorConfig"
-                      ></ckeditor>
-                    </div>
-                  </div>
                   <div class="container col-sm-8 text-center center-block">
                     <button
                       type="submit"
@@ -209,109 +325,7 @@
             role="tabpanel"
             aria-labelledby="profile-tab"
             v-if="profileData"
-          >
-            <div class="form-group">
-              <label for="image" class="col-sm-2 control-label">Selected Files</label>
-
-              <table v-if="tempImages.length > 0" class="table">
-                <thead class="thead-light">
-                  <td>Filename</td>
-                  <td>Size</td>
-                  <td>Type</td>
-                </thead>
-                <tbody>
-                  <tr class="selected-files" v-for="file  in   tempImages" v-bind:key="file.id">
-                    <td class="filename">{{file.name}}</td>
-                    <td class="size">{{file.size}}</td>
-                    <td class="type">{{file.type}}</td>
-                  </tr>
-                </tbody>
-              </table>
-              <div class="col-sm-10">
-                <div class="box">
-                  <input
-                    @change="fileSelected"
-                    type="file"
-                    name="files"
-                    id="file-1"
-                    class="inputfile inputfile-1"
-                    data-multiple-caption="{count} files selected"
-                    multiple
-                    accept="image/*"
-                  />
-                  <label for="file-1">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="17"
-                      viewBox="0 0 20 17"
-                    >
-                      <path
-                        d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"
-                      />
-                    </svg>
-                    <span>Choose a file&hellip;</span>
-                  </label>
-                </div>
-              </div>
-            </div>
-            <div class="container col-sm-8 text-center center-block">
-              <button
-                @click="formSubmit"
-                type="submit"
-                class="btn btn-success btn-lg btn-block"
-              >Guardar Cambios</button>
-            </div>
-            <hr />
-            <div class="col-sm-12">
-              <div
-                class="imagen preview-image"
-                v-for="item in filterImages(profileData.image)"
-                v-bind:key="item.id"
-              >
-                <a @click="deleteImage(item,item.id)" class="button btn-sm btn-outline-danger">
-                  <span aria-hidden="true">&times;</span>
-                </a>
-                <img :src="'/uploads/profile/'+item" alt />
-              </div>
-            </div>
-          </div>
-          <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-            <!-- <div class="form-group">
-              <label for="url" class="col-sm-2 control-label">Url</label>
-              <div class="col-sm-10">
-                <input
-                  type="text"
-                  id="url"
-                  name="url"
-                  v-model="profile.url"
-                  class="form-control"
-                  required
-                />
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="url_instagram" class="col-sm-2 control-label">Url</label>
-              <div class="col-sm-10">
-                <input
-                  type="text"
-                  id="url_instgram"
-                  name="url_instagram"
-                  v-model="profile.url_instagram"
-                  class="form-control"
-                  required
-                />
-              </div>
-            </div>-->
-
-            <div class="container col-sm-8 text-center center-block">
-              <button
-                type="submit"
-                class="btn btn-success btn-lg btn-block"
-                @click="formSubmit"
-              >Guardar Cambios</button>
-            </div>
-          </div>
+          ></div>
         </div>
 
         <!--  -->
@@ -437,24 +451,46 @@ export default {
   data() {
     return {
       editor: ClassicEditor,
-      editorData: "<p>Rich-text editor content.</p>",
+      editorData: "<p>Ingrese la descripcion de su producto o servicio</p>",
       editorConfig: {},
       show: true,
-      categoriesData: [],
       notification: "",
       profileData: {},
       tempImages: [],
-      output: ""
+      output: "",
+      categoryOptions: [
+        {
+          language: "Javascript",
+          libs: [
+            { name: "Vue.js", category: "Front-end" },
+            { name: "Adonis", category: "Backend" }
+          ]
+        },
+        {
+          language: "Ruby",
+          libs: [
+            { name: "Rails", category: "Backend" },
+            { name: "Sinatra", category: "Backend" }
+          ]
+        },
+        {
+          language: "Other",
+          libs: [
+            { name: "Laravel", category: "Backend" },
+            { name: "Phoenix", category: "Backend" }
+          ]
+        }
+      ]
     };
   },
 
   mounted() {
     this.profileData = this.profile;
   },
-  props: ["profile"],
+  props: ["profile", "categories"],
   ready: function() {
     this.profileData = this.profile;
-    this.categoriesData = JSON.parse(this.categories);
+    this.categories = JSON.parse(categories);
   },
   methods: {
     getInputValue() {

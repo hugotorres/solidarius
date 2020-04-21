@@ -21,31 +21,14 @@ class UserController extends Controller
     {
         $this->middleware('auth');
     }
-    public function admin(){
 
-        $users = User::all();
-        return view('admin.admin')->withUsers($users) ;
-    }
-    public function newCategory(Request $request){
-        Debugbar::info($request);
-        try {
-            $category = Category::updateOrCreate(
-                ['id' => $request->id],
-                $request->all()
-            );
-        } catch (\Throwable $th) {
-            throw $th;
-        }
 
-        return redirect()->route('admin.categories' );
-
-    }
 
     public function profileImageDelete(Request $request){
         $imageDelete = $request->image;
 
         $profile = Profile::where('user_id', '=', Auth::user()->id)->firstOrFail();
-      $allImages = (array)json_decode($profile->image);
+             $allImages = (array)json_decode($profile->image);
 
             // Search
             $pos = array_search($imageDelete, $allImages);
@@ -64,26 +47,19 @@ class UserController extends Controller
 
     }
 
-    public function users(){
-        $profiles =Profile::all();
-        $users = User::all();
-        return view('admin.users')->withUsers($users)->withProfiles($profiles);
-    }
 
-    public function categories(){
 
-        $categories = Category::all();
 
-        return view('admin.categories')->withCategories($categories) ;
-    }
 
     public function profile($id){
         Auth::user()->id;
         $user = User::find($id);
-        $profile = Profile::where('user_id', '=', $user->id)->firstOrFail();
-        $categories = Category::all();
+
 
         if($user->id === Auth::user()->id){
+            $profile = Profile::where('user_id', '=', $user->id)->firstOrFail();
+            $categories = Category::all();
+
             return view('user.profile')->withUser($user)->withProfile($profile)->withCategories($categories);
         }
 

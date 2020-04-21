@@ -29,6 +29,20 @@ class WelcomController extends Controller
     {
         $categories = Category::all();
         $profiles =Profile::all();
+        $ordered =[];
+        foreach($categories as $category){
+            if(!isset($category->parent_id)){
+                $ordered[$category->id]=$category->toArray();
+            }
+            else
+            if(isset($category->parent_id)){
+                array_push($ordered[$category->parent_id],$category->toArray());
+            }
+
+        }
+
+
+
 
         $newProfiles = array_map(function($prod) {
            $prod['image']=json_decode($prod['image']);
@@ -36,7 +50,7 @@ class WelcomController extends Controller
         }, $profiles->toArray());
         $profiles = collect($newProfiles);
 
-        return view('welcome', ['categories' => $categories,'profiles'=>$profiles->toJson()]);
+        return view('welcome', ['categories' => $ordered,'profiles'=>$profiles->toJson()]);
     }
 
 
@@ -52,7 +66,6 @@ class WelcomController extends Controller
 
 
      function fixImages(){
-        dd(profile);
 
     }
 
