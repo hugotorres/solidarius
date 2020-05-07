@@ -14,14 +14,25 @@
 
     <div class="col-sm-8 mapa">
       <div>
-        <google-map v-on:clickMarker="clickMarker" :markers="products" :categories="categories"></google-map>
+        <google-map
+          v-on:clickMarker="clickMarker"
+          :markersFilter="selectedCategory"
+          :markers="products"
+          :categories="categories"
+        ></google-map>
       </div>
     </div>
 
     <div class="col-sm-4 detalles">
       <div>
-        <detail-panel :isActive="sidePanel" :categories="categories" :producto="detailRequested" v-if="detailRequested"></detail-panel>
-        </div>
+        <detail-panel
+          :isActive="sidePanel"
+          :categories="categories"
+          :producto="detailRequested"
+          v-if="detailRequested"
+          v-on:search="searchMarkers"
+        ></detail-panel>
+      </div>
     </div>
   </div>
 </template>
@@ -31,19 +42,24 @@ import GoogleMap from "./GoogleMap";
 import { Multipane, MultipaneResizer } from "vue-multipane";
 import DetailsPanel from "./DetailsPanel";
 export default {
+  computed: {
+    filteredProducts: function() {
+      return this.products;
+    }
+  },
   data() {
     return {
       products: this.$attrs.products,
       categories: this.$attrs.categories,
       sidePanel: false,
       detailRequested: {},
-      mapClass: "closed"
+      mapClass: "closed",
+      searchTerm: null,
+      selectedCategory: null
     };
   },
   name: "HomeMap",
-  mounted() {
-    console.log(this.products);
-  },
+  mounted() {},
   components: {
     GoogleMap,
     DetailsPanel,
@@ -51,6 +67,14 @@ export default {
     MultipaneResizer
   },
   methods: {
+    searchMarkers(event) {
+      console.log(event);
+      this.filterMarkersByCategory(event);
+    },
+    filterMarkersByCategory(cat) {
+      this.selectedCategory = cat;
+      this.$attrs.products = [];
+    },
     clickMarker(event) {
       this.sidePanel = true;
       this.detailRequested = event;
@@ -59,7 +83,18 @@ export default {
   }
 };
 </script>
-<style lang=scss scoped>
+<style lang=scss  >
+div #navbarSupportedContent:before {
+  content: "";
+  background: #ff00001c;
+  height: 95px;
+  width: 95px;
+  top: -95px;
+  left: 90%;
+  position: absolute;
+  transform: rotate(45deg);
+  z-index: 0;
+}
 i {
   padding: 5px;
 }

@@ -38,7 +38,7 @@ class User extends Authenticatable
     }
     public function profile(){
 
-        return $this->hasMany('App\Profile');
+        return $this->hasOne('App\Profile');
     }
     /**
      * The attributes that should be cast to native types.

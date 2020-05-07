@@ -79,7 +79,7 @@ class AdminController extends Controller
                 $fileNameNewIcon=  preg_replace("/[^a-z0-9\_\-\.]/i", '', basename($icon->getClientOriginalName()));
                 $filenameIcon = time().$fileNameNewIcon;
                 $extensionIcon = $icon->getClientOriginalExtension();
-                Storage::disk('public')->put($filenameIcon.'.'.$extensionIcon,  File::get($icon));
+                Storage::disk('public')->put($filenameIcon,  File::get($icon));
                 $category->icon = $filenameIcon;
             }
 
@@ -87,7 +87,7 @@ class AdminController extends Controller
                 $fileNameNewImage=  preg_replace("/[^a-z0-9\_\-\.]/i", '', basename($image->getClientOriginalName()));
                 $filenameImage = time().$fileNameNewImage;
                 $extensionImage = $image->getClientOriginalExtension();
-                Storage::disk('public')->put($filenameImage.'.'.$extensionImage,  File::get($image));
+                Storage::disk('public')->put($filenameImage,  File::get($image));
                 $category->image = $filenameImage;
             }
             $category->title = $request->title;
@@ -121,7 +121,7 @@ class AdminController extends Controller
             $fileNameNewIcon=  preg_replace("/[^a-z0-9\_\-\.]/i", '', basename($icon->getClientOriginalName()));
             $filenameIcon = time().$fileNameNewIcon;
             $extensionIcon = $icon->getClientOriginalExtension();
-            Storage::disk('public')->put($filenameIcon.'.'.$extensionIcon,  File::get($icon));
+            Storage::disk('public')->put($filenameIcon,  File::get($icon));
             $category->icon = $filenameIcon;
             }
 
@@ -130,7 +130,7 @@ class AdminController extends Controller
             $fileNameNewImage=  preg_replace("/[^a-z0-9\_\-\.]/i", '', basename($image->getClientOriginalName()));
             $filenameImage = time().$fileNameNewImage;
             $extensionImage = $image->getClientOriginalExtension();
-            Storage::disk('public')->put($filenameImage.'.'.$extensionImage,  File::get($image));
+            Storage::disk('public')->put($filenameImage,  File::get($image));
             $category->image = $filenameImage;
             }
 

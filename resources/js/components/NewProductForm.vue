@@ -28,7 +28,7 @@
               aria-controls="home"
               aria-selected="true"
             >Perfil</a>
-          </li>
+          </li><!-- 
           <li class="nav-item">
             <a
               class="nav-link"
@@ -39,7 +39,7 @@
               aria-controls="profile"
               aria-selected="false"
             >Fotos</a>
-          </li>
+          </li> -->
           <li class="nav-item hidden">
             <a
               class="nav-link"
@@ -83,7 +83,7 @@
                       />
                     </div>
                   </div>
-                  <multiselect
+                  <!-- <multiselect
                     v-model="profile.category_id"
                     :options="cateogryOptions"
                     :multiple="true"
@@ -97,7 +97,7 @@
                     <span
                       slot="noResult"
                     >Oops! No elements found. Consider changing the search query.</span>
-                  </multiselect>
+                  </multiselect> -->
 
                   <!-- <div class="form-group">
                     <label for="text" class="col-sm-2 control-label">Tarifa</label>

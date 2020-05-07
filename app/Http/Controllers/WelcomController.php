@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\Profile;
 
+use Debugbar;
+
 use Illuminate\Http\Request;
 
 class WelcomController extends Controller
@@ -38,17 +40,22 @@ class WelcomController extends Controller
             if(isset($category->parent_id)){
                 array_push($ordered[$category->parent_id],$category->toArray());
             }
-
         }
 
 
+        foreach($profiles as $profile){
+            $profile->categoria = $profile->category;
+            $profile['image']=json_decode($profile['image']);
+            $profile['category_id'] = $profile->category->id;
+            $profile['category_icon'] = $profile->category->icon;
+            $profile['category_title'] = $profile->category->title; 
+            
+        }
 
 
-        $newProfiles = array_map(function($prod) {
-           $prod['image']=json_decode($prod['image']);
-            return $prod;
-        }, $profiles->toArray());
-        $profiles = collect($newProfiles);
+        
+      //  $profiles = collect($newProfiles); 
+
 
         return view('welcome', ['categories' => $ordered,'profiles'=>$profiles->toJson()]);
     }

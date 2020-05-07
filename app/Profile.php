@@ -31,10 +31,13 @@ class Profile extends Model
 
     public function category()
     {
-        return $this->hasOne('App\Category');
+        return $this->belongsTo('App\Category');
     }
     public function user()
     {
       return $this->belongsTo(User::class);
     }
+
+
+    
 }

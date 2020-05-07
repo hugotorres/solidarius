@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('content')
+
 <?php $active=true;  ?>
     <div class="justify-content-center">
             <home-map :products="{{$profiles}}" :categories="{{json_encode($categories)}}"></home-map>
